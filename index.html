@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACROZELA AI Mystery Story Generator - Free AI Detective Case Builder</title>
+    <meta name="description" content="Generate high-quality interactive detective mystery cases instantly using ACROZELA AI Mystery Story Generator. Enter your clues and let the AI script a professional criminal investigation case file.">
+    <meta name="keywords" content="free AI Mystery Story Generator, acrozela AI Mystery Story Generator, AI detective case builder, crime pattern generator, interactive mystery writer">
+    <meta name="author" content="ACROZELA TECH">
+    <meta name="robots" content="index, follow">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-primary: #f4f7fc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --lite-blue: #0284c7;
+            --lite-blue-hover: #0369a1;
+            --lite-blue-bg: #f0f9ff;
+            --lite-blue-border: #bae6fd;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+            --radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Header Setup - Clean & Minimalist */
+        header {
+            background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.25rem 2rem;
+            display: flex;
+            justify-content: list-item;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--lite-blue);
+            letter-spacing: -0.5px;
+        }
+
+        /* App Container Layout */
+        .app-container {
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            flex: 1;
+        }
+
+        .workspace-panel, .output-panel {
+            background-color: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .panel-heading {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            border-bottom: 2px solid var(--lite-blue-bg);
+            padding-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            background-color: #fafafa;
+            transition: all 0.2s ease;
+        }
+
+        input[type="text"]:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--lite-blue);
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        /* Output Case Display Architecture */
+        .case-file-wrapper {
+            border: 1px dashed var(--lite-blue-border);
+            background-color: #fafbfc;
+            border-radius: 8px;
+            padding: 1.5rem;
+            flex: 1;
+            overflow-y: auto;
+            max-height: 680px;
+        }
+
+        .empty-dashboard-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: 100%;
+            color: var(--text-muted);
+            padding: 5rem 1rem;
+        }
+
+        .empty-dashboard-state h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-dashboard-state p {
+            font-size: 0.9rem;
+            max-width: 320px;
+            line-height: 1.5;
+        }
+
+        .case-header {
+            margin-bottom: 1.5rem;
+            border-bottom: 2px dashed var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .case-id {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--lite-blue);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .case-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-top: 0.25rem;
+        }
+
+        .case-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .case-section h4 {
+            font-size: 0.95rem;
+            color: var(--lite-blue-hover);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .case-section p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #334155;
+            text-align: justify;
+        }
+
+        .clue-badge-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .clue-badge {
+            background-color: var(--lite-blue-bg);
+            border: 1px solid var(--lite-blue-border);
+            color: var(--lite-blue-hover);
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* Realtime Engine Status */
+        .realtime-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #22c55e;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.9); opacity: 0.6; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.6; }
+        }
+
+        /* Footer Architecture */
+        footer {
+            background-color: var(--bg-card);
+            border-top: 1px solid var(--border-color);
+            padding: 1.5rem;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            margin-top: auto;
+        }
+
+        /* Responsive Mechanics (Mobile and Window Adaptive Layouts) */
+        @media (max-width: 968px) {
+            .app-container {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+                gap: 1rem;
+            }
+            header {
+                padding: 1rem;
+            }
+            .workspace-panel, .output-panel {
+                padding: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-title">ACROZELA AI MYSTERY STORY GENERATOR </div>
+    </header>
+
+    <main class="app-container">
+        
+        <section class="workspace-panel">
+            <div class="panel-heading">
+                <span>INVESTIGATION PARAMETERS</span>
+                <div class="realtime-indicator">
+                    <div class="pulse-dot"></div>
+                    <span>REALTIME LIVE GENERATOR</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="crimeScene">CRIME SCENE LOCATION</label>
+                <input type="text" id="crimeScene" placeholder="e.g., Midnight Express Train, Abandoned Mansion" autocomplete="off">
+            </div>
+
+            <div class="input-group">
+                <label for="suspectsList">SUSPECTS (COMMA SEPARATED)</label>
+                <input type="text" id="suspectsList" placeholder="e.g., Professor Alistair, Countess Eleanor, Conductor" autocomplete="off">
+            </div>
+
+            <div class="input-group">
+                <label for="userClues">CRIMINAL INVESTIGATION CLUES / EVIDENCE (ENGLISH / TAMIL)</label>
+                <textarea id="userClues" placeholder="Type clues here to build instantly...&#10;(e.g., A broken pocket watch, muddy footprints...&#10;Or Tamil clues: ஒரு உடைந்த கடிகாரம், கைரேகைகள்...)"></textarea>
+            </div>
+
+            <div class="input-group">
+                <label for="narrativeStyle">MYSTERY STORY STYLE</label>
+                <select id="narrativeStyle">
+                    <option value="classic">Classic British Whodunit (Sherlock Style)</option>
+                    <option value="noir">Gritty Detective Noir (Hardboiled Case)</option>
+                    <option value="modern">Modern Forensic Tech Thriller</option>
+                </select>
+            </div>
+        </section>
+
+        <section class="output-panel">
+            <div class="panel-heading">
+                <span>GENERATED AI DETECTIVE CASE FILE</span>
+                <span style="font-size: 0.85rem; color: var(--lite-blue); font-weight: 600;">FREE ACCESS</span>
+            </div>
+
+            <div class="case-file-wrapper" id="caseFileOutput">
+                <div class="empty-dashboard-state" id="emptyState">
+                    <h3>EMPTY DASHBOARD</h3>
+                    <p>Start typing your location, suspects, or investigation clues live. The AI engine updates the detective file in realtime.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        ACROZELA AI MYSTERY STORY GENERATOR - DEVELOPED BY ACROZELA TECH
+    </footer>
+
+    <script>
+        // Attach immediate realtime input listeners for instant rendering
+        document.getElementById('crimeScene').addEventListener('input', generateMysteryCaseRealtime);
+        document.getElementById('suspectsList').addEventListener('input', generateMysteryCaseRealtime);
+        document.getElementById('userClues').addEventListener('input', generateMysteryCaseRealtime);
+        document.getElementById('narrativeStyle').addEventListener('change', generateMysteryCaseRealtime);
+
+        // Constant baseline values used if specific text subcomponents are missing during typing
+        let dynamicCaseIdNumber = Math.floor(100000 + Math.random() * 900000);
+
+        function generateMysteryCaseRealtime() {
+            const crimeScene = document.getElementById('crimeScene').value.trim();
+            const suspectsRaw = document.getElementById('suspectsList').value.trim();
+            const userClues = document.getElementById('userClues').value.trim();
+            const narrativeStyle = document.getElementById('narrativeStyle').value;
+            const outputContainer = document.getElementById('caseFileOutput');
+
+            // Maintain fully empty dashboard state if no primary text parameters are typed yet
+            if (!crimeScene && !suspectsRaw && !userClues) {
+                outputContainer.innerHTML = `
+                    <div class="empty-dashboard-state" id="emptyState">
+                        <h3>EMPTY DASHBOARD</h3>
+                        <p>Start typing your location, suspects, or investigation clues live. The AI engine updates the detective file in realtime.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Fallbacks for fluid realtime building
+            const activeScene = crimeScene || "Unspecified Crime Scene";
+            const processedClues = userClues || "Evaluating faint structural anomalies and latent traces...";
+            
+            let suspects = suspectsRaw ? suspectsRaw.split(',').map(s => s.trim()).filter(s => s.length > 0) : [];
+            if (suspects.length === 0) {
+                suspects = ['Unknown Suspect Alpha', 'The Mysterious Shadow'];
+            }
+
+            // Lock in a consistent primary culprit from the dynamic typed array list
+            const primaryCulprit = suspects[0] || 'The Unseen Actor';
+
+            // Split processing loops for generating beautiful interface badges
+            const processCluesArr = userClues ? userClues.split(/[,.]+/).filter(c => c.trim().length > 1) : ["Awaiting Data Entry"];
+
+            let introParagraph = '';
+            let discoveryParagraph = '';
+            let suspectBriefing = '';
+            let deductionMatrix = '';
+
+            // Engine styling configurations
+            if (narrativeStyle === 'noir') {
+                introParagraph = `The rain beat heavily against the glass at the ${activeScene}. The atmosphere was thick with complex tension. A professional crime had compromised the area, leaving local investigators completely out of their depth. Time was running out.`;
+                discoveryParagraph = `Securing the perimeter immediately brought light to the core clues noted in the log: "${processedClues}". Every individual trace presents a clear challenge to the suspect matrix.`;
+            } else if (narrativeStyle === 'modern') {
+                introParagraph = `An unauthorized breach alert triggered across system parameters at the ${activeScene}. Digital matrix sensors point towards a calculated sequence of physical and systemic interferences.`;
+                discoveryParagraph = `Telemetry data parsing uncovered essential systemic points. Cross-referencing the environment logs revealed explicit variables: "${processedClues}". These coordinates narrow down the execution windows perfectly.`;
+            } else {
+                // Classic Whodunit Framework
+                introParagraph = `A sudden turn of events disrupted the quiet setting of the ${activeScene}. An intricate and baffling crime had been committed behind closed doors, leaving everyone present under direct suspicion.`;
+                discoveryParagraph = `The chief detective carefully collected evidence across the room. Scattered near the focal point were the critical elements waiting to be untangled: "${processedClues}". The patterns hint closely at premeditated intent.`;
+            }
+
+            // Build out suspects data dossiers dynamically
+            suspects.forEach((suspect, index) => {
+                let motive = '';
+                if (index === 0) {
+                    motive = `Exhibits irregular behavioral responses during immediate cross-examination. Financial ledger checks indicate hidden operations within regional records, and their personal timeline lacks verification.`;
+                } else {
+                    motive = `Alibi appears structurally intact, though their documented positioning inside the ${activeScene} leaves unanswered queries regarding their ultimate motives.`;
+                }
+                suspectBriefing += `<li><strong>${suspect}</strong>: ${motive}</li>`;
+            });
+
+            // Deduction matrix conclusion compilation
+            deductionMatrix = `By connecting the core structure of the documented parameters—specifically the implications of <em>"${processedClues}"</em>—the investigation successfully isolates false paths. The logic lines converge squarely onto <strong>${primaryCulprit}</strong>.`;
+
+            // HTML Layout String injection
+            let badgesHtml = processCluesArr.map(clue => `<span class="clue-badge">${clue.trim()}</span>`).join('');
+
+            outputContainer.innerHTML = `
+                <div class="case-header">
+                    <div class="case-id">OFFICIAL INVESTIGATION FILE: #ACZ-${dynamicCaseIdNumber}</div>
+                    <div class="case-title">The Incident At The ${activeScene}</div>
+                </div>
+
+                <div class="case-section">
+                    <h4>I. Incident Overview & Environment</h4>
+                    <p>${introParagraph}</p>
+                </div>
+
+                <div class="case-section">
+                    <h4>II. Clue Assessment & Evidence Grid</h4>
+                    <p>${discoveryParagraph}</p>
+                    <div class="clue-badge-container">
+                        ${badgesHtml}
+                    </div>
+                </div>
+
+                <div class="case-section">
+                    <h4>III. Suspect Dossiers & Interrogations</h4>
+                    <ul style="padding-left: 1.25rem; font-size: 0.95rem; line-height: 1.6; color: #334155; display:flex; flex-direction:column; gap:0.5rem;">
+                        ${suspectBriefing}
+                    </ul>
+                </div>
+
+                <div class="case-section" style="background-color: var(--lite-blue-bg); border-left: 4px solid var(--lite-blue); padding: 1rem; border-radius: 4px;">
+                    <h4>IV. Detective's Final Logic Deduction</h4>
+                    <p style="margin: 0; font-weight: 500;">${deductionMatrix}</p>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
